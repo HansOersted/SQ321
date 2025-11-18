@@ -1,19 +1,19 @@
 import pandas as pd
 import numpy as np
 
-user_input_end_time = 10050 # Select the end time for the training data
+user_input_end_time = 20700 # Select the end time for the training data
 
-df = pd.read_csv("tracking_error_dynamics_9600s_to_10050s.csv")
+df = pd.read_csv("tracking_error_dynamics_20400s_to_20700s.csv")
 
 closest_end_time = df["Time (s)"].iloc[(df["Time (s)"] - user_input_end_time).abs().argmin()]
 print(f"Selected end time: {closest_end_time} s")
 
-subset_df = df[(df["Time (s)"] >= 9600) & (df["Time (s)"] <= closest_end_time)].copy()
+subset_df = df[(df["Time (s)"] >= 20400) & (df["Time (s)"] <= closest_end_time)].copy()
 
 e = subset_df[["tracking_error", "tracking_error_derivative"]].to_numpy()
 de = subset_df[["tracking_error_derivative", "tracking_error_second_derivative"]].to_numpy()
 
-output_filename = f"training_data_9600s_to_{int(closest_end_time)}s.npz"
+output_filename = f"training_data_20400s_to_{int(closest_end_time)}s.npz"
 np.savez(output_filename, e=e, de=de)
 
 print(f"Training data saved as: {output_filename}")
